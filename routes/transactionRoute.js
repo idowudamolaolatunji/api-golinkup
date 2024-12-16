@@ -1,12 +1,12 @@
 const express = require("express");
 const transactionController = require("../controllers/transactionController");
-const { protected, isRestricted } = require("../middlewares/protected");
+const { isProtected, isRestricted } = require("../middlewares/protected");
 
 const router = express.Router();
 
-router.get("/", protected, transactionController.getAllTransaction);
-router.get("/:id", protected, transactionController.getTransactionById);
-router.delete("/:id", protected, isRestricted, transactionController.deleteTrasactionById);
+router.get("/", isProtected, transactionController.getAllTransaction);
+router.get("/:id", isProtected, transactionController.getTransactionById);
+router.delete("/:id", isProtected, isRestricted, transactionController.deleteTrasactionById);
 
 
 module.exports = router;

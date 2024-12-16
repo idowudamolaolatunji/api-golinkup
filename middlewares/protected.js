@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 //// PROTECTED USER MIDDLEWARE  ////
 //////////////////////////////////////////////
 
-exports.isAuthProtected = async function (req, res, next) {
+exports.isProtected = async function (req, res, next) {
 	try {
 		// CHECK TOKEN AND GET TOKEN
 		let token = req.headers.authorization && req.headers.authorization?.startsWith("Bearer") ? req.headers.authorization?.split(" ")[1] : null;

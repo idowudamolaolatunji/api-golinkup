@@ -1,5 +1,5 @@
 const Point = require('../models/pointModel');
-const User = require('../models/usersModel');
+const User = require('../models/userModel');
 const { asyncWrapper } = require('../utils/handlers');
 const { signToken } = require('../utils/helpers');
 
