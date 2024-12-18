@@ -5,8 +5,8 @@ const { capFirstLetter } = require("../utils/helpers");
 
 
 exports.getAll = function(Model, title) {
-    return asyncWrapper(async function(_, res) {
-        const userId = req.user._id;
+    return asyncWrapper(async function(req, res) {
+        const userId = req?.user?.id;
         
         const documents = await Model.find(userId ? { user: userId } : {});
         if(!documents) return res.json({ message: `No ${title} found!` });

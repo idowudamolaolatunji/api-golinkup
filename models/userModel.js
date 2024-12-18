@@ -18,11 +18,10 @@ const userSchema = new mongoose.Schema({
         validate: [validator.isEmail, "Enter a valid email"],
         lowercase: true,
         required: true,
+        trim: true,
     },
-    phoneNumber: {
-        type: String,
-        required: true,
-    },
+    phone: { type: String, required: true },
+    avatar: { type: String, default: "" },
     password: {
         type:String,
         required: true,
@@ -38,10 +37,11 @@ const userSchema = new mongoose.Schema({
             message: 'Password are not the same!',
         }
     },
-    image: {
-        type: String,
-        default: ''
-    },
+    gender: String,
+    phoneNumber: String,
+    dialCode: String,
+    countryCode: String,
+    country: String,
     role: {
         type: String,
         enum: ["user", "admin", "moderator"],
@@ -52,8 +52,6 @@ const userSchema = new mongoose.Schema({
         default: true
     },
 
-
-    // PASSWORD 
     passwordChangedAt: Date,
     passwordResetToken: { type: String, select: false },
     passwordResetExpires: { type: Date, select: false },

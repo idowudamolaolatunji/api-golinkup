@@ -1,5 +1,6 @@
     
 const mongoose = require('mongoose');
+const { formatfutureDate } = require('../utils/helpers');
 
 
 //////////////////////////////////////////////
@@ -15,22 +16,30 @@ const listingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    whatsappNumber: {
+    type: {
         type: String,
-        unique: true,
+        enum: ["whatsapp", "instagram", "tiktok"],
         required: true,
     },
-    displayImage: String,
+    link: String,
+    country: String,
+    details: { type: String, required: true },
+    displayPhoto: { type: String, default: "" },
     targetGender: {
         type: String,
-        enum: ["male", "female", "all"],
-        default: "all"
+        enum: ["male", "female", "both"],
+        default: "both"
     },
-    displayDuration: {
+    displayDurationInHours: {
         type: Number,
-        enum: [6, 12, 24, 48, 168, 672],
-        default: 6,
+        enum: [12, 24, 48, 168, 672],
+        default: 12,
     },
+    dateTimeToExpire: Date,
+    isActive: {
+        type: Boolean,
+        default: true,
+    }
 }, {
     timestamps: true,
 });
@@ -40,6 +49,32 @@ const listingSchema = new mongoose.Schema({
 //// SCHEMA MIDDLEWARES ////
 //////////////////////////////////////////////
 
+listingSchema.pre("save", function(next) {
+    if(this.isNew || this.isModified("type")) {
+        if(this.type == "whatsapp") {
+            this.link = `https://wa.me/${this.details}?text=Hi%20${this.displayName}%2C%20From%20GoLinkUp. %0A%0ASave%20my%20number%20as%20..`
+        }
+        if(this.type == "instagram") {
+            this.link = `https://www.instagram.com/${this.details}`
+        }
+        if(this.type == "tiktok") {
+            this.link = `https://www.tiktok.com/@${this.details}`
+        }
+    }
+
+    next();
+})
+
+
+listingSchema.pre("save", function(next) {
+    if(this.isNew || this.isModified("displayDurationInHours")) {
+        this.dateTimeToExpire = formatfutureDate(this.displayDurationInHours);
+    }
+
+    next();
+});
+
+
 listingSchema.pre(/^find/, function (next) {
     this.populate({
         path: "user",
@@ -48,6 +83,7 @@ listingSchema.pre(/^find/, function (next) {
 
     next();
 });
+
 
 //////////////////////////////////////////////
 //// MODEL AND COLLECTION ////

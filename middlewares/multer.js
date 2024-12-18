@@ -1,5 +1,5 @@
 const multer = require('multer');
-// const sharp = require('sharp');
+const sharp = require('sharp');
 
 
 //////////////////////////////////////////////////
@@ -38,7 +38,6 @@ const upload = multer({
 //// MULTER UPLOADS ////
 //////////////////////////////////////////////////
 exports.uploadSingleImage = upload.single('image');
-exports.uploadMultipleImage = upload.array('images', 4);
 
 
 //////////////////////////////////////////////////
@@ -55,7 +54,7 @@ exports.resizeSingleDisplayImage = async function (req, _, next) {
             .resize(500, 500)
             .toFormat('jpeg')
             .jpeg({ quality: 75 })
-            .toFile(`public/images/${req.file.filename}`);
+            .toFile(`public/assets/displayPhotos/${req.file.filename}`);
         next();
 
     } catch(err) {

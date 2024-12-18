@@ -36,6 +36,14 @@ test1234
 -   **GET | HEAD** `/api/auth/me`  
     Retrieves the currently authenticated user's information.
 
+<!-- {
+    "displayName": "Idex23 🎉🎉",
+    "type": "whatsapp",
+    "details": "2349057643470",
+    "targetGender": "female",
+    "displayDuration": 12,
+    "amount": 2000
+} -->
 <!--
 ### Categories Routes (Categories Management)
 

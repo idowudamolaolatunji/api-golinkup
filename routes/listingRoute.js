@@ -1,19 +1,22 @@
 const express = require("express");
 const listingController = require("../controllers/listingController");
 const { isProtected, isRestricted } = require("../middlewares/protected");
+const { uploadSingleImage, resizeSingleDisplayImage } = require("../middlewares/multer")
 
 const router = express.Router();
 
 
-router.get("/", isProtected, listingController.getAllListing);
+router.get("/", isProtected, isRestricted, listingController.getAllListingAdmin);
+router.get("/all", listingController.getAllListingUser);
+
 router.get("/:id", isProtected, listingController.getListingById);
-router.patch(":/id", isProtected, listingController.updateListingById);
-router.delete(":/id", isProtected, listingController.deleteListingById);
+router.patch("/:id", isProtected, listingController.updateListingById);
+router.delete("/:id", isProtected, listingController.deleteListingById);
 
 
-router.get("/all", isProtected, listingController.getAllListing);
-router.post("/create", isProtected, listingController.createListing);
-router.post("/upload-image", isProtected, listingController.uploadListingDisplayImage);
+router.post("/create", isProtected, listingController.createListingPoint);
+router.post("/create/pay", isProtected, listingController.createListingPay);
+router.post("/upload-image/:id", isProtected, uploadSingleImage, resizeSingleDisplayImage, listingController.uploadListingDisplayImage);
 
 
 module.exports = router;

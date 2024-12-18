@@ -6,22 +6,17 @@ const { signToken } = require('../utils/helpers');
 
 
 exports.signupUser = asyncWrapper(async function(req, res) {
-    const { name, gender, phoneNumber, email, password, passwordConfirm } = req.body;
+    const { email, gender } = req.body;
 
     // CHECK IF THE EMAIL ALREADY EXISTS
     const emailExist = await User.findOne({ email });
     if(emailExist) return res.json({ message: 'Email already exist!!' });
 
-    // CREATE USER
-    const newUser = await User.create({
-        name,
-        gender,
-        phoneNumber,
-        email: email.trim(),
-        password, 
-        passwordConfirm,
-    });
+    const randomNumber = Math.floor(Math.random() * gender == "male" ? 2 : 3) + 1;
+    const avatar = `/assets/avatar${gender}-${randomNumber}.jpg`;
 
+    // CREATE USER
+    const newUser = await User.create({ ...req.body, role: "user", avatar });
     await Point.create({ user: newUser._id })
 
     // SEND BACK A RESPONSE 
@@ -34,17 +29,17 @@ exports.signupUser = asyncWrapper(async function(req, res) {
 
 
 exports.loginUser = asyncWrapper(async function (req, res) {
-    const { phoneNumber, password } = req.body;
+    const { phone, password } = req.body;
 
     // FIND THE USER AND DO SOME CHECKINGS 
-    const user = await User.findOne({ phoneNumber }).select('+password');
+    const user = await User.findOne({ phone }).select('+password');
 
-    if(!user) return res.json({ message: 'Account does not or no longer exist!' });
+    if(!user) return res.json({ message: 'Account does not exist!' });
     if(!user.isActive) return res.json({ message: 'Account is inactive or disabled.' });
         
     // COMPARE THE USER PASSWORD AND CHECK IF THE EAMIL IS CORRECT
     const comparedPassword = await user.comparePassword(password, user.password)
-    if(!user.phoneNumber || !comparedPassword) return res.json({ message: 'Phone number or password incorrect!'});
+    if(!user.phone || !comparedPassword) return res.json({ message: 'Phone number or password incorrect!'});
 
     // SIGNING ACCESS TOKEN
     const token = signToken(user._id);

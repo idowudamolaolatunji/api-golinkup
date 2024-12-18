@@ -25,6 +25,13 @@ exports.formatDateLater = function(givenDate) {
     return date.format('MMMM D, YYYY');
 }
 
+exports.formatfutureDate = function(hours) {
+    const currentDate = moment();
+    const futureDate = currentDate.add(hours, 'hours');
+    return futureDate.format('YYYY-MM-DD HH:mm:ss');
+}
+  
+
 
 // SIGN JWT ACCESS TOKEN
 exports.signToken = function(id) {
