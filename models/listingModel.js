@@ -27,7 +27,7 @@ const listingSchema = new mongoose.Schema({
     displayPhoto: { type: String, default: "" },
     targetGender: {
         type: String,
-        enum: ["male", "female", "both"],
+        enum: ["male", "female", "all-gender"],
         default: "both"
     },
     displayDurationInHours: {
@@ -36,9 +36,10 @@ const listingSchema = new mongoose.Schema({
         default: 12,
     },
     dateTimeToExpire: Date,
-    isActive: {
-        type: Boolean,
-        default: true,
+    status: {
+        type: String,
+        enum: ["active", "inactive"],
+        default: "active"
     }
 }, {
     timestamps: true,

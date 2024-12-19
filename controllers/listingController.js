@@ -10,10 +10,23 @@ const handleRefactory = require("./handleRefactory");
 // ADMIN AND USER ACTIONS
 exports.getAllListingAdmin = handleRefactory.getAll(Listing, "listings");
 
-exports.getAllListingUser = asyncWrapper(async function(req, res) {
+exports.getAllListingPromoter = asyncWrapper(async function(req, res) {
     const userId = req?.user?.id;
     
-    const listings = await Listing.find(userId ? { user: userId } : { isActive: true });
+    const listings = await Listing.find({ user: userId });
+    if(!listings) return res.json({ message: `No ${title} found!` });
+
+    res.status(200).json({
+        status: "success",
+        data: { listings }
+    })
+});
+
+exports.getAllListingGenUser = asyncWrapper(async function(req, res) {
+    const userId = req?.user?.id;
+    
+    // const listings = await Listing.find({ status: "active", user: { $ne: userId } });
+    const listings = await Listing.find({ status: "active" });
     if(!listings) return res.json({ message: `No ${title} found!` });
 
     res.status(200).json({

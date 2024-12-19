@@ -7,7 +7,8 @@ const router = express.Router();
 
 
 router.get("/", isProtected, isRestricted, listingController.getAllListingAdmin);
-router.get("/all", listingController.getAllListingUser);
+router.get("/me", isProtected, listingController.getAllListingPromoter);
+router.get("/lists/all", isProtected, listingController.getAllListingGenUser);
 
 router.get("/:id", isProtected, listingController.getListingById);
 router.patch("/:id", isProtected, listingController.updateListingById);

@@ -13,7 +13,7 @@ router.delete("/users/:id", isProtected, isRestricted, authController.signupUser
 
 router.post("/signup", authController.signupUser);
 router.post("/login", authController.loginUser);
-router.post("/logout", authController.logoutUser);
+router.post("/logout", isProtected, authController.logoutUser);
 router.post("/update-password", isProtected, authController.updatePassword);
 
 
