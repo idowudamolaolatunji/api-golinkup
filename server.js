@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 
 const app = require('./app');
 dotenv.config({ path: './config.env' });
+
 const PORT = process.env.PORT || 3121;
 const HOST = process.env.HOST;
 
@@ -18,7 +19,6 @@ async function connectDB() {
 
     } catch(err) {
         console.log(err.message);
-        process.exit(1);
     }
 }
 connectDB();
